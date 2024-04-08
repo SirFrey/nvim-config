@@ -32,4 +32,3 @@ vim.cmd.source(vimrc)
 
 require 'config.keymaps'
 require('telescope').load_extension('fzy_native')
-print("hello")
