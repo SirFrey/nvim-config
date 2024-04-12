@@ -40,7 +40,7 @@ vim.opt.softtabstop = 4
 vim.opt.shiftwidth = 2
 vim.opt.expandtab = true
 vim.opt.smartindent = true
-vim.opt.cursorline = false
+vim.opt.cursorline = true
 
 vim.opt.signcolumn = 'yes'
 
@@ -56,3 +56,4 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   group = highlight_group,
   pattern = '*',
 })
+

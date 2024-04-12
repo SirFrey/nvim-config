@@ -1,6 +1,6 @@
 require 'config.options'
 --[[
-  - https://learnxinyminutes.com/docs/lua/
+  -https://learnxinyminutes.com/docs/lua/
  ]]
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
 
@@ -26,9 +26,12 @@ require('lazy').setup {
     { import = 'plugins' },
   },
 }
+
 -- load vim file to load some scripts
 local vimrc = vim.fn.stdpath 'config' .. '/vimrc.vim'
 vim.cmd.source(vimrc)
 
 require 'config.keymaps'
-require('telescope').load_extension('fzy_native')
+require('telescope').load_extension 'fzy_native'
+
+
