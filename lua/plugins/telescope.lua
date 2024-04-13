@@ -27,6 +27,12 @@ return {
       }
     end,
   },
-  { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
+  {
+    'nvim-telescope/telescope-fzf-native.nvim',
+    build = 'make',
+    config = function()
+      require('telescope').load_extension 'fzy_native'
+    end
+  },
   { 'nvim-telescope/telescope-fzy-native.nvim' },
 }

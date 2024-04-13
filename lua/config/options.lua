@@ -44,6 +44,8 @@ vim.opt.cursorline = true
 
 vim.opt.signcolumn = 'yes'
 
+vim.opt.colorcolumn = '80'
+
 vim.cmd 'autocmd BufRead,BufNewFile *.mdx set filetype=mdx'
 
 -- [[ Highlight on yank ]]
