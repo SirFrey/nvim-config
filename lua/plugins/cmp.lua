@@ -9,20 +9,36 @@ return {
       'hrsh7th/cmp-cmdline',
       'saadparwaiz1/cmp_luasnip',
       'L3MON4D3/LuaSnip',
+      'tailwindcss-colorizer-cmp.nvim'
     },
     config = function()
+      local lspkind = require("lspkind")
+      vim.api.nvim_set_hl(0, "CmpGhostText", { link = "Comment", default = true })
       local cmp = require 'cmp'
       vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
       cmp.setup {
+        formatting = {
+          format = lspkind.cmp_format({
+            before = function(entry, item)
+              local icons = require("lazyvim.config").icons.kinds
+              if icons[item.kind] then
+                item.kind = icons[item.kind] .. item.kind
+              end
+              local vim_item = require("tailwindcss-colorizer-cmp").formatter(entry, item)
+              return item, vim_item
+            end,
+          })
+        },
+
         snippet = {
           expand = function(args)
             require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
           end,
         },
-        window = {
-          completion = cmp.config.window.bordered(),
-          documentation = cmp.config.window.bordered(),
-        },
+          window = {
+            completion = cmp.config.window.bordered(),
+            documentation = cmp.config.window.bordered(),
+          },
         mapping = cmp.mapping.preset.insert {
           ['<C-u>'] = cmp.mapping.scroll_docs(-4),
           ['<C-d>'] = cmp.mapping.scroll_docs(4),
@@ -31,15 +47,19 @@ return {
           ['<CR>'] = cmp.mapping.confirm { select = true }, -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
         },
         sources = cmp.config.sources({
-          { name = 'nvim_lsp', max_item_count = 200 },
-          { name = 'nvim_lua' },
+          { name = 'nvim_lsp' },
           { name = 'luasnip' }, -- For luasnip users.
+          { name = 'nvim_lua' },
         }, {
-          { name = 'buffer' },
           { name = 'path' },
+          { name = 'buffer' },
         }),
+        experimental = {
+          ghost_text = {
+            hl_group = "CmpGhostText",
+          },
+        },
       }
-
       cmp.setup.cmdline(':', {
         mapping = cmp.mapping.preset.cmdline(),
         sources = cmp.config.sources({
@@ -49,5 +69,22 @@ return {
         }),
       })
     end
+  },
+  {
+    "rafamadriz/friendly-snippets",
+    config = function()
+      require("luasnip.loaders.from_vscode").lazy_load()
+    end,
+  },
+  {
+    "L3MON4D3/LuaSnip",
+    -- follow latest release.
+    version = "v2.*", -- Replace <CurrentMajor> by the latest released major (first number of latest release)
+    -- install jsregexp (optional!).
+    build = "make install_jsregexp"
+  },
+  {
+    "L3MON4D3/LuaSnip",
+    dependencies = { "rafamadriz/friendly-snippets" },
   }
 }

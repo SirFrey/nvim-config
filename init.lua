@@ -1,3 +1,4 @@
+require('config.options')
 --[[
   -https://learnxinyminutes.com/docs/lua/
  ]]
@@ -16,12 +17,10 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 -- [[ Configure plugins ]]
-require('config.options')
 require('lazy').setup('plugins')
 require('config.keymaps')
 
 -- load vim file to load some scripts
 local vimrc = vim.fn.stdpath 'config' .. '/lua/config/vimrc.vim'
-print(vimrc)
 vim.cmd.source(vimrc)
 
