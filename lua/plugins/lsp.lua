@@ -1,46 +1,45 @@
 return {
-  { 'williamboman/mason.nvim', config = true },
   {
-    'williamboman/mason-lspconfig.nvim',
-    opts = {
-      ensure_installed = { "lua_ls", "rust_analyzer", "tailwindcss", "tsserver" },
-    }
+    'mrcjkb/rustaceanvim',
+    version = '^3',
+    lazy = false,
+  },
+  {
+    "pmizio/typescript-tools.nvim",
+    dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
+    config = function()
+      require("typescript-tools").setup {
+        settings = {
+          expose_as_code_action = { 'fix_all', 'add_missing_imports', 'organize_imports' },
+        }
+      }
+    end,
   },
   {
     'neovim/nvim-lspconfig',
+    dependencies = { 'williamboman/mason.nvim', 'williamboman/mason-lspconfig.nvim' },
     config = function()
-      local _border = "single"
-      vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
-        vim.lsp.handlers.hover, {
-          border = _border
-        }
-      )
-
-      vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
-        vim.lsp.handlers.signature_help, {
-          border = _border
-        }
-      )
-
-      vim.diagnostic.config {
-        float = { border = _border }
-      }
+      require('mason').setup({
+        ensure_installed = { "lua_ls", "rust_analyzer", "tailwindcss", "tsserver" },
+      })
       require('mason-lspconfig').setup_handlers {
-        function(server_name) -- default handler (optional)
-          require('lspconfig')[server_name].setup {}
-        end,
         -- Next, you can provide a dedicated handler for specific servers.
-        -- For example, a handler override for the `rust_analyzer`:
-        -- ['rust_analyzer'] = function()
-        --   require('rust-tools').setup {}
-        -- end,
         ['tailwindcss'] = function()
           require('lspconfig').tailwindcss.setup {
           }
         end,
+        ['jsonls'] = function()
+          require('lspconfig').jsonls.setup {
+            settings = {
+              json = {
+                schemas = require('schemastore').json.schemas(),
+                validate = { enable = true },
+              },
+            },
+          }
+        end,
         ['lua_ls'] = function()
           require('lspconfig').lua_ls.setup {
-            capabilities = lsp_capabilities,
             settings = {
               Lua = {
                 runtime = {
@@ -55,7 +54,8 @@ return {
                   }
                 }
               }
-            } }
+            }
+          }
         end,
       }
       --
