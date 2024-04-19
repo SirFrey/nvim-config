@@ -4,6 +4,7 @@ return {
     version = '^3',
     lazy = false,
   },
+  { "folke/neodev.nvim", opts = {} },
   {
     "pmizio/typescript-tools.nvim",
     dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
@@ -19,6 +20,9 @@ return {
     'neovim/nvim-lspconfig',
     dependencies = { 'williamboman/mason.nvim', 'williamboman/mason-lspconfig.nvim' },
     config = function()
+      require("neodev").setup({
+        -- add any options here, or leave empty to use the default settings
+      })
       require('mason').setup({
         ensure_installed = { "lua_ls", "rust_analyzer", "tailwindcss", "tsserver" },
       })

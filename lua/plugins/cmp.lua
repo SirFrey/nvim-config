@@ -16,6 +16,7 @@ return {
       vim.api.nvim_set_hl(0, "CmpGhostText", { link = "Comment", default = true })
       local cmp = require 'cmp'
       vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
+      vim.api.nvim_set_hl(0, "CmpNormal", { bg = "#353537" })
       cmp.setup {
         formatting = {
           format = lspkind.cmp_format({
@@ -29,16 +30,20 @@ return {
             end,
           })
         },
-
         snippet = {
           expand = function(args)
             require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
           end,
         },
-          window = {
-            completion = cmp.config.window.bordered(),
-            documentation = cmp.config.window.bordered(),
+        window = {
+          completion = {
+            winhighlight = "Normal:CmpNormal",
           },
+          --  completion = cmp.config.window.bordered(),
+          -- documentation = {
+          --   winhighlight = "Normal:CmpNormal"
+          -- },
+        },
         mapping = cmp.mapping.preset.insert {
           ['<C-u>'] = cmp.mapping.scroll_docs(-4),
           ['<C-d>'] = cmp.mapping.scroll_docs(4),

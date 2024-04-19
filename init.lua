@@ -23,4 +23,3 @@ require('config.keymaps')
 -- load vim file to load some scripts
 local vimrc = vim.fn.stdpath 'config' .. '/lua/config/vimrc.vim'
 vim.cmd.source(vimrc)
-
