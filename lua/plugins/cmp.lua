@@ -14,9 +14,10 @@ return {
     config = function()
       local lspkind = require("lspkind")
       vim.api.nvim_set_hl(0, "CmpGhostText", { link = "Comment", default = true })
+      vim.api.nvim_set_hl(0, "CmpNormal", { bg = "#303134" })
+      vim.api.nvim_set_hl(0, "NormalFloat", { bg = "#303134" })
       local cmp = require 'cmp'
       vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
-      vim.api.nvim_set_hl(0, "CmpNormal", { bg = "#353537" })
       cmp.setup {
         formatting = {
           format = lspkind.cmp_format({
@@ -39,10 +40,6 @@ return {
           completion = {
             winhighlight = "Normal:CmpNormal",
           },
-          --  completion = cmp.config.window.bordered(),
-          -- documentation = {
-          --   winhighlight = "Normal:CmpNormal"
-          -- },
         },
         mapping = cmp.mapping.preset.insert {
           ['<C-u>'] = cmp.mapping.scroll_docs(-4),
@@ -59,20 +56,7 @@ return {
           { name = 'path' },
           { name = 'buffer' },
         }),
-        experimental = {
-          ghost_text = {
-            hl_group = "CmpGhostText",
-          },
-        },
       }
-      cmp.setup.cmdline(':', {
-        mapping = cmp.mapping.preset.cmdline(),
-        sources = cmp.config.sources({
-          { name = 'path' },
-        }, {
-          { name = 'cmdline' },
-        }),
-      })
     end
   },
   {

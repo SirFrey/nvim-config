@@ -1,51 +1,40 @@
 return {
-  {
-    'mrcjkb/rustaceanvim',
-    version = '^3',
-    lazy = false,
-  },
   { "folke/neodev.nvim", opts = {} },
-  {
-    "pmizio/typescript-tools.nvim",
-    dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
-    config = function()
-      require("typescript-tools").setup {
-        settings = {
-          expose_as_code_action = { 'fix_all', 'add_missing_imports', 'organize_imports' },
-        }
-      }
-    end,
-  },
   {
     'neovim/nvim-lspconfig',
     dependencies = { 'williamboman/mason.nvim', 'williamboman/mason-lspconfig.nvim' },
     config = function()
-      require("neodev").setup({
-        -- add any options here, or leave empty to use the default settings
-      })
+      local capabilities = vim.lsp.protocol.make_client_capabilities()
+      capabilities.textDocument.completion.completionItem.snippetSupport = true
       require('mason').setup({
         ensure_installed = { "lua_ls", "rust_analyzer", "tailwindcss", "tsserver" },
       })
+      require("neodev").setup({}) -- Lua development
+
       require('mason-lspconfig').setup_handlers {
-        -- Next, you can provide a dedicated handler for specific servers.
-        ['tailwindcss'] = function()
-          require('lspconfig').tailwindcss.setup {
+        function(server_name) -- default handler (optional)
+          require('lspconfig')[server_name].setup {
           }
         end,
         ['jsonls'] = function()
           require('lspconfig').jsonls.setup {
             settings = {
-              json = {
-                schemas = require('schemastore').json.schemas(),
+              json = { schemas = require('schemastore').json.schemas(),
                 validate = { enable = true },
               },
             },
           }
         end,
+        ['tsserver'] = function()
+          require('lspconfig').tsserver.setup({
+            root_dir = require('lspconfig.util').root_pattern('.git')
+          })
+        end,
         ['lua_ls'] = function()
           require('lspconfig').lua_ls.setup {
             settings = {
               Lua = {
+                completion = { callSnippet = "Replace" },
                 runtime = {
                   version = 'LuaJIT'
                 },

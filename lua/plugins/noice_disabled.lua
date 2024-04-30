@@ -1,15 +1,36 @@
 return {
   {
+    -- TODO: Put some backgronds of color CmpNormal
     "folke/noice.nvim",
     event = "VeryLazy",
     enabled = false,
     config = function()
+      require("lualine").setup({
+        sections = {
+          lualine_x = {
+            {
+              require("noice").api.statusline.mode.get,
+              cond = require("noice").api.statusline.mode.has,
+              color = { fg = "#ff9e64" },
+            }
+          },
+        },
+      })
       require("noice").setup({
         views = {
+          cmdline_popup = {
+           -- border = {
+           --   style = "none",
+           --   padding = { 2, 3 },
+           -- },
+            win_options = {
+              winhighlight = "NormalFloat:NormalFloat,FloatBorder:FloatBorder",
+            },
+          },
           mini = {
             win_options = {
               winblend = 0,
-              winhighlight = "Normal:Normal,FloatBorder:SpecialChar",
+              winhighlight = "NormalFloat:NormalFloat,FloatBorder:FloatBorder",
             },
           },
         },
@@ -26,7 +47,7 @@ return {
           bottom_search = true,         -- use a classic bottom cmdline for search
           command_palette = true,       -- position the cmdline and popupmenu together
           long_message_to_split = true, -- long messages will be sent to a split
-          inc_rename = true,           -- enables an input dialog for inc-rename.nvim
+          inc_rename = true,            -- enables an input dialog for inc-rename.nvim
         },
       })
     end,

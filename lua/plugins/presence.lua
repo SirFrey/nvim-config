@@ -11,4 +11,5 @@ return {
       log_level         = "debug",                    -- Log messages at or above this level (one of the following: "debug", "info", "warn", "error")
     })
   end,
+  enabled = false
 }
