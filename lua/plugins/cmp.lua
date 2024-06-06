@@ -56,6 +56,16 @@ return {
           { name = 'path' },
           { name = 'buffer' },
         }),
+        -- To use git you need to install the plugin  and uncomment lines below
+        -- Set configuration for specific filetype.
+        --[[ cmp.setup.filetype('gitcommit', {
+    sources = cmp.config.sources({
+      { name = 'git' },
+    }, {
+      { name = 'buffer' },
+    })
+ })
+ require("cmp_git").setup() ]] --
       }
     end
   },

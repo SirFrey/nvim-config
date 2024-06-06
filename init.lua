@@ -20,6 +20,6 @@ vim.opt.rtp:prepend(lazypath)
 require('lazy').setup('plugins')
 require('config.keymaps')
 
--- load vim file to load some scripts
+-- multiplatform script
 local vimrc = vim.fn.stdpath 'config' .. '/lua/config/vimrc.vim'
 vim.cmd.source(vimrc)
