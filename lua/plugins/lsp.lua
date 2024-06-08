@@ -8,8 +8,9 @@ return {
       local capabilities = vim.tbl_deep_extend('force', {}, vim.lsp.protocol.make_client_capabilities(),
         cmp_lsp.default_capabilities())
       capabilities.textDocument.completion.completionItem.snippetSupport = true
-      require('mason').setup({
-        ensure_installed = { "lua_ls", "rust_analyzer", "tailwindcss", "tsserver" },
+      require('mason').setup()
+      require('mason-lspconfig').setup({
+        ensure_installed = { "lua_ls", "rust_analyzer", "tailwindcss", "tsserver", "biome", "cssls", "astro" },
       })
       require("neodev").setup({}) -- Lua development
 
