@@ -11,7 +11,33 @@ return {
       'L3MON4D3/LuaSnip',
     },
     config = function()
-      local lspkind = require("lspkind")
+      local cmp_kinds = {
+        Text = '  ',
+        Method = '  ',
+        Function = '  ',
+        Constructor = '  ',
+        Field = '  ',
+        Variable = '  ',
+        Class = '  ',
+        Interface = '  ',
+        Module = '  ',
+        Property = '  ',
+        Unit = '  ',
+        Value = '  ',
+        Enum = '  ',
+        Keyword = '  ',
+        Snippet = '  ',
+        Color = '  ',
+        File = '  ',
+        Reference = '  ',
+        Folder = '  ',
+        EnumMember = '  ',
+        Constant = '  ',
+        Struct = '  ',
+        Event = '  ',
+        Operator = '  ',
+        TypeParameter = '  ',
+      }
       vim.api.nvim_set_hl(0, "CmpGhostText", { link = "Comment", default = true })
       vim.api.nvim_set_hl(0, "CmpNormal", { bg = "#303134" })
       vim.api.nvim_set_hl(0, "NormalFloat", { bg = "#303134" })
@@ -19,16 +45,10 @@ return {
       vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
       cmp.setup {
         formatting = {
-          format = lspkind.cmp_format({
-            before = function(entry, item)
-              local icons = require("lazyvim.config").icons.kinds
-              if icons[item.kind] then
-                item.kind = icons[item.kind] .. item.kind
-              end
-              local vim_item = require("tailwindcss-colorizer-cmp").formatter(entry, item)
-              return item, vim_item
-            end,
-          })
+          format = function(entry, vim_item)
+            vim_item.kind = (cmp_kinds[vim_item.kind] or '') .. vim_item.kind
+            return vim_item, require("tailwindcss-colorizer-cmp").formatter(entry, vim_item)
+          end,
         },
         snippet = {
           expand = function(args)

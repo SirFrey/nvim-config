@@ -20,7 +20,11 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 -- [[ Configure plugins ]]
-require('lazy').setup('plugins')
+require('lazy').setup({
+  spec = {
+    import = 'plugins',
+  }
+})
 require('config.keymaps')
 
 -- multiplatform script

@@ -1,6 +1,7 @@
 return {
   {
     'catppuccin/nvim',
+    lazy = true,
     name = 'catppuccin',
     opts = {
       transparent_background = true,
@@ -13,12 +14,6 @@ return {
         treesitter = true,
         treesitter_context = true,
       },
-    },
-  },
-  {
-    'LazyVim/LazyVim',
-    opts = {
-      colorscheme = 'catppuccin-mocha',
     },
   },
 }
