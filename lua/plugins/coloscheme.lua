@@ -1,19 +1,12 @@
 return {
-  {
     'catppuccin/nvim',
-    lazy = true,
     name = 'catppuccin',
-    opts = {
-      transparent_background = true,
-      integations = {
-        lsp_trouble = true,
-        mason = true,
-        markdown = true,
-        mini = true,
-        telescope = false,
-        treesitter = true,
-        treesitter_context = true,
-      },
-    },
-  },
+    config = function()
+      require('catppuccin').setup({
+        flavour = 'mocha',
+        transparent_background = true,
+        show_end_of_buffer = true,
+      })
+    vim.cmd.colorscheme "catppuccin"
+    end,
 }

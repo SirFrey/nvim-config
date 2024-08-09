@@ -4,10 +4,10 @@ return {
 	cmd = "ConformInfo",
 	opts = {
 		formatters_by_ft = {
-			["javascript"] = { "prettier" },
-			["javascriptreact"] = { "prettier" },
-			["typescript"] = { "prettier" },
-			["typescriptreact"] = { "prettier" },
+			["javascript"] = { "oxlint" },
+			["javascriptreact"] = { "oxlint" },
+			["typescript"] = { "oxlint" },
+			["typescriptreact"] = { "oxlint" },
 			["vue"] = { "prettier" },
 			["css"] = { "prettier" },
 			["scss"] = { "prettier" },
