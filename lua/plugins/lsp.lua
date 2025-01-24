@@ -10,7 +10,7 @@ return {
       capabilities.textDocument.completion.completionItem.snippetSupport = true
       require('mason').setup()
       require('mason-lspconfig').setup({
-        ensure_installed = { "lua_ls", "rust_analyzer", "tailwindcss", "tsserver", "cssls", "astro", "jsonls", "oxlint" },
+        ensure_installed = { "lua_ls", "rust_analyzer", "tailwindcss", "ts_ls", "cssls", "astro", "jsonls" },
       })
       require("neodev").setup({}) -- Lua development
       local util = require("lspconfig.util")
@@ -55,8 +55,8 @@ return {
             },
           })
         end,
-        ['tsserver'] = function()
-          require('lspconfig').tsserver.setup({
+        ['ts_ls'] = function()
+          require('lspconfig').ts_ls.setup({
             root_dir = require('lspconfig.util').root_pattern('.git')
           })
         end,
