@@ -44,12 +44,6 @@ return {
       local cmp = require 'cmp'
       vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
       cmp.setup {
-        formatting = {
-          format = function(entry, vim_item)
-            vim_item.kind = (cmp_kinds[vim_item.kind] or '') .. vim_item.kind
-            return vim_item, require("tailwindcss-colorizer-cmp").formatter(entry, vim_item)
-          end,
-        },
         snippet = {
           expand = function(args)
             require('luasnip').lsp_expand(args.body) -- For `luasnip` users.

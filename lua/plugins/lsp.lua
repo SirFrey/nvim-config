@@ -1,110 +1,77 @@
 return {
+  -- Lua dev helpers
   { "folke/neodev.nvim", opts = {} },
+
+  -- LSP + Mason integration
   {
-    'neovim/nvim-lspconfig',
-    dependencies = { 'williamboman/mason.nvim', 'williamboman/mason-lspconfig.nvim' },
+    "neovim/nvim-lspconfig",
+    dependencies = {
+      -- Mason installer
+      { "mason-org/mason.nvim", opts = {} },
+      -- Mason <> lspconfig bridge
+      {
+        "mason-org/mason-lspconfig.nvim",
+        -- ensure these servers are installed via Mason
+        opts = {
+          ensure_installed = { "lua_ls", "rust_analyzer", "tailwindcss", "ts_ls" },
+        },
+      },
+    },
     config = function()
-      local cmp_lsp = require('cmp_nvim_lsp')
-      local capabilities = vim.tbl_deep_extend('force', {}, vim.lsp.protocol.make_client_capabilities(),
-        cmp_lsp.default_capabilities())
+      -- base client capabilities
+      local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities.textDocument.completion.completionItem.snippetSupport = true
-      require('mason').setup()
-      require('mason-lspconfig').setup({
-        ensure_installed = { "lua_ls", "rust_analyzer", "tailwindcss", "ts_ls", "cssls", "astro", "jsonls" },
-      })
-      require("neodev").setup({}) -- Lua development
-      local util = require("lspconfig.util")
-      require('mason-lspconfig').setup_handlers {
-        function(server_name) -- default handler (optional)
-          require('lspconfig')[server_name].setup {
-            capabilities = capabilities,
-          }
-        end,
-        ['jsonls'] = function()
-          require('lspconfig').jsonls.setup {
-            capabilities = capabilities,
-            settings = {
-              json = {
-                format = { enable = true },
-                schemas = require('schemastore').json.schemas {
-                  extra = {
-                    {
-                      description = 'Shadcn UI components',
-                      fileMatch = { 'components.json' },
-                      name = 'components.json',
-                      url = 'https://ui.shadcn.com/schema.json',
-                    },
-                  }
-                },
-                validate = { enable = true },
-              }
-            }
-          }
-        end,
-        ['tailwindcss'] = function()
-          require 'lspconfig'.tailwindcss.setup({
-            settings = {
-              tailwindCSS = {
-                experimental = {
-                  classRegex = {
-                    { "cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]" },
-                    { "cx\\(([^)]*)\\)",  "(?:'|\"|`)([^']*)(?:'|\"|`)" }
-                  },
-                },
-              },
-            },
-          })
-        end,
-        ['ts_ls'] = function()
-          require('lspconfig').ts_ls.setup({
-            root_dir = require('lspconfig.util').root_pattern('.git')
-          })
-        end,
-        ['lua_ls'] = function()
-          require('lspconfig').lua_ls.setup {
-            settings = {
-              Lua = {
-                completion = { callSnippet = "Replace" },
-                runtime = {
-                  version = 'LuaJIT'
-                },
-                diagnostics = {
-                  globals = { 'vim' },
-                },
-                workspace = {
-                  library = {
-                    vim.env.VIMRUNTIME,
-                  }
-                }
-              }
-            }
-          }
-        end,
-        ['mdx_analyzer'] = function()
-          local function get_typescript_server_path(root_dir)
-            local project_root = util.find_node_modules_ancestor(root_dir)
-            return project_root and (util.path.join(project_root, "node_modules", "typescript", "lib")) or ""
-          end
-          require 'lspconfig'.mdx_analyzer.setup {
-            capabilities = capabilities,
-            filetypes = { "mdx", "markdown.mdx" },
-            init_options = {
-              typescript = {},
-            },
-            on_new_config = function(new_config, new_root_dir)
-              if vim.tbl_get(new_config.init_options, "typescript") and not new_config.init_options.typescript.tsdk then
-                -- LATER: Support custom typescript lib
-                --
-                -- local tsdk = require("util.typescript").get_tsdk_from_config() or get_typescript_server_path(new_root_dir)
-                new_config.init_options.typescript.tsdk = get_typescript_server_path(new_root_dir)
-              end
-            end,
-          }
-        end,
+
+      -- setup Lua dev
+      require("neodev").setup()
+
+      -- bootstrap Mason and ensure our servers are installed
+      require("mason").setup()
+      require("mason-lspconfig").setup()
+
+      local lspconfig = require("lspconfig")
+
+      -- JSON with schemastore
+      lspconfig.jsonls.setup {
+        capabilities = capabilities,
+        settings = {
+          json = {
+            schemas  = require("schemastore").json.schemas(),
+            validate = { enable = true },
+          },
+        },
       }
-      --
+
+      -- TypeScript
+      lspconfig.ts_ls.setup {
+        capabilities = capabilities,
+        root_dir    = require("lspconfig.util").root_pattern(".git"),
+      }
+
+      -- Lua (runtime, diagnostics, workspace)
+      lspconfig.lua_ls.setup {
+        capabilities = capabilities,
+        settings = {
+          Lua = {
+            completion = { callSnippet = "Replace" },
+            runtime    = { version = "LuaJIT" },
+            diagnostics = { globals = { "vim" } },
+            workspace   = { library = vim.api.nvim_get_runtime_file("", true) },
+          },
+        },
+      }
+    end,
+  },
+
+  -- optional bufferline styling
+  {
+    "akinsho/bufferline.nvim",
+    optional = true,
+    opts = function(_, opts)
+      if (vim.g.colors_name or ""):find("catppuccin") then
+        opts.highlights = require("catppuccin.groups.integrations.bufferline").get()
+      end
     end,
   },
 }
 
--- ...
