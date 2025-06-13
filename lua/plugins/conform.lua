@@ -20,6 +20,7 @@ return {
       ["markdown.mdx"] = { "prettier" },
       ["graphql"] = { "prettier" },
       lua = { "stylua" },
+      python = { "isort", "black" },
     },
   },
 }
