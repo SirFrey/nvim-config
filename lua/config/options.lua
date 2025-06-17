@@ -2,9 +2,15 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 vim.g.autoformat = false
 
+
 -- [[ Setting options ]]
 -- See `:help vim.o`
 vim.o.hlsearch = false
+
+vim.opt.swapfile = false
+vim.opt.backup = false
+vim.opt.undodir = os.getenv 'HOME' .. '/.vim/undodir'
+vim.opt.undofile = true
 
 vim.opt.scrolloff = 8
 vim.opt.isfname:append '@-@'
@@ -57,5 +63,4 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   pattern = '*',
 })
 
-
-vim.diagnostic.config({ virtual_text = true })
+vim.diagnostic.config { virtual_text = true }
