@@ -4,18 +4,15 @@ return {
 
   -- LSP + Mason integration
   {
-    'neovim/nvim-lspconfig',
+    'mason-org/mason-lspconfig.nvim',
     dependencies = {
       -- Mason installer
       { 'mason-org/mason.nvim', opts = {} },
+      'neovim/nvim-lspconfig',
       -- Mason <> lspconfig bridge
-      {
-        'mason-org/mason-lspconfig.nvim',
-        -- ensure these servers are installed via Mason
-        opts = {
-          ensure_installed = { 'pylsp', 'pyright', 'lua_ls', 'rust_analyzer', 'tailwindcss', 'ts_ls' },
-          },
-        },
+    },
+    opts = {
+      ensure_installed = { 'pylsp', 'pyright', 'lua_ls', 'rust_analyzer', 'tailwindcss', 'ts_ls' },
     },
     config = function()
       -- base client capabilities
@@ -24,10 +21,6 @@ return {
 
       -- setup Lua dev
       require('neodev').setup()
-
-      -- bootstrap Mason and ensure our servers are installed
-      require('mason').setup()
-      require('mason-lspconfig').setup()
 
       local lspconfig = require 'lspconfig'
 
@@ -45,7 +38,16 @@ return {
       -- TypeScript
       lspconfig.ts_ls.setup {
         capabilities = capabilities,
-        root_dir = require('lspconfig.util').root_pattern '.git',
+        root_dir = function(...)
+          return require('lspconfig.util').root_pattern '.git'(...)
+        end,
+      }
+      -- Tailwind CSS
+      lspconfig.tailwindcss.setup {
+        capabilities = capabilities,
+        root_dir = function(...)
+          return require('lspconfig.util').root_pattern '.git'(...)
+        end,
       }
 
       -- Lua (runtime, diagnostics, workspace)

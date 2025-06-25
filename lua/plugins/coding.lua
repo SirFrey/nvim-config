@@ -8,22 +8,23 @@ return {
         autotag = {
           enable = true,
         },
-        ensure_installed = { 'c', 'lua', 'vim', 'vimdoc', 'query', 'elixir', 'heex', 'javascript','typescript', 'html', 'css', 'rust', 'astro', 'tsx' },
+        ensure_installed = { 'c', 'lua', 'vim', 'vimdoc', 'query', 'elixir', 'heex', 'javascript', 'typescript', 'html', 'css', 'rust', 'astro', 'tsx' },
         sync_install = false,
         highlight = { enable = true },
         incremental_selection = {
           enable = true,
           keymaps = {
-            init_selection = "<C-space>",
-            node_incremental = "<C-space>",
+            init_selection = '<C-space>',
+            node_incremental = '<C-space>',
             scope_incremental = false,
-            node_decremental = "<bs>",
+            node_decremental = '<bs>',
           },
-        }, indent = { enable = true },
+        },
+        indent = { enable = true },
       }
     end,
   },
   {
     'windwp/nvim-ts-autotag',
-  }
+  },
 }
