@@ -9,12 +9,26 @@ return {
       -- Mason installer
       { 'mason-org/mason.nvim', opts = {} },
       'neovim/nvim-lspconfig',
+      'WhoIsSethDaniel/mason-tool-installer.nvim',
       -- Mason <> lspconfig bridge
     },
-    opts = {
-      ensure_installed = { 'pylsp', 'pyright', 'lua_ls', 'rust_analyzer', 'tailwindcss', 'ts_ls' },
-    },
     config = function()
+      require('mason-lspconfig').setup {
+        -- ensure these servers are installed
+        ensure_installed = { 'pylsp', 'pyright', 'lua_ls', 'rust_analyzer', 'tailwindcss', 'ts_ls' },
+      }
+      local mason_tool_installer = require 'mason-tool-installer'
+
+      mason_tool_installer.setup {
+        ensure_installed = {
+          'prettierd', -- prettier formatter
+          'stylua', -- lua formatter
+          'isort', -- python formatter
+          'black', -- python formatter
+          'pylint', -- python linter
+          'eslint_d', -- js linter
+        },
+      }
       -- base client capabilities
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities.textDocument.completion.completionItem.snippetSupport = true
