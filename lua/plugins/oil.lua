@@ -5,10 +5,12 @@ return {
       show_hidden = true,
     },
     keymaps = {
-      ["<C-l>"] = false,
-      ["gr"] = "actions.refresh",
+      ['<C-l>'] = false,
+      ['gr'] = 'actions.refresh',
+      ['<C-h>'] = false,
+      ['<C-a>'] = { 'actions.select', opts = { horizontal = true } },
     },
   },
   -- Optional dependencies
-  dependencies = { "nvim-tree/nvim-web-devicons" },
+  dependencies = { 'nvim-tree/nvim-web-devicons' },
 }
