@@ -2,14 +2,28 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 vim.g.autoformat = false
 
-
 -- [[ Setting options ]]
 -- See `:help vim.o`
 vim.o.hlsearch = false
 
 vim.opt.swapfile = false
 vim.opt.backup = false
-vim.opt.undodir = os.getenv 'HOME' .. '/.vim/undodir'
+-- Set the undo directory in a cross-platform way
+local undodir
+local separator = vim.loop.os_uname().version:match 'Windows' and '\\' or '/'
+
+if vim.fn.has 'win32' then
+  -- On Windows, construct the path using USERPROFILE
+  local home = os.getenv 'USERPROFILE'
+  undodir = home .. separator .. '.vim' .. separator .. 'undodir'
+else
+  -- On Linux and other Unix-like systems, use HOME
+  local home = os.getenv 'HOME'
+  undodir = home .. separator .. '.vim' .. separator .. 'undodir'
+end
+
+vim.opt.undodir = undodir
+
 vim.opt.undofile = true
 
 vim.opt.scrolloff = 8
