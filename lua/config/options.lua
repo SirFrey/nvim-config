@@ -2,6 +2,8 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 vim.g.autoformat = false
 
+vim.opt.laststatus = 3
+
 -- [[ Setting options ]]
 -- See `:help vim.o`
 vim.o.hlsearch = false
