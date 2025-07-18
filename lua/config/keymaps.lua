@@ -13,11 +13,11 @@ vim.keymap.set('n', '<C-u>', '<C-u>zz')
 
 -- Remap for dealing with word wrap only in specific file types
 vim.api.nvim_create_autocmd('FileType', {
-  pattern = {'text', 'markdown'},
+  pattern = { 'text', 'markdown' },
   callback = function()
     vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
     vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
-  end
+  end,
 })
 
 vim.keymap.set('n', '<leader>y', '"+y')
@@ -53,17 +53,33 @@ vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
 -- Harpoon
 local harpoon = require 'harpoon'
 
-vim.keymap.set("n", "<leader>a", function() harpoon:list():add() end)
-vim.keymap.set("n", "<C-e>", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
+vim.keymap.set('n', '<leader>a', function()
+  harpoon:list():add()
+end)
+vim.keymap.set('n', '<C-e>', function()
+  harpoon.ui:toggle_quick_menu(harpoon:list())
+end)
 
-vim.keymap.set("n", "<C-h>", function() harpoon:list():select(1) end)
-vim.keymap.set("n", "<C-t>", function() harpoon:list():select(2) end)
-vim.keymap.set("n", "<C-n>", function() harpoon:list():select(3) end)
-vim.keymap.set("n", "<C-s>", function() harpoon:list():select(4) end)
+vim.keymap.set('n', '<C-h>', function()
+  harpoon:list():select(1)
+end)
+vim.keymap.set('n', '<C-t>', function()
+  harpoon:list():select(2)
+end)
+vim.keymap.set('n', '<C-n>', function()
+  harpoon:list():select(3)
+end)
+vim.keymap.set('n', '<C-s>', function()
+  harpoon:list():select(4)
+end)
 
 -- Toggle previous & next buffers stored within Harpoon list
-vim.keymap.set("n", "<C-S-P>", function() harpoon:list():prev() end)
-vim.keymap.set("n", "<C-S-N>", function() harpoon:list():next() end)
+vim.keymap.set('n', '<C-S-P>', function()
+  harpoon:list():prev()
+end)
+vim.keymap.set('n', '<C-S-N>', function()
+  harpoon:list():next()
+end)
 
 -- Toggle previous & next buffers stored within Harpoon list
 vim.keymap.set('n', '<C-i>', function()
@@ -73,12 +89,18 @@ vim.keymap.set('n', '<C-o>', function()
   harpoon:list():next()
 end)
 
-local ls = require("luasnip")
-vim.keymap.set({ "i" }, "<C-K>", function() ls.expand() end, { silent = true })
-vim.keymap.set({ "i", "s" }, "<C-L>", function() ls.jump(1) end, { silent = true })
-vim.keymap.set({ "i", "s" }, "<C-J>", function() ls.jump(-1) end, { silent = true })
+local ls = require 'luasnip'
+vim.keymap.set({ 'i' }, '<C-K>', function()
+  ls.expand()
+end, { silent = true })
+vim.keymap.set({ 'i', 's' }, '<C-L>', function()
+  ls.jump(1)
+end, { silent = true })
+vim.keymap.set({ 'i', 's' }, '<C-J>', function()
+  ls.jump(-1)
+end, { silent = true })
 
-vim.keymap.set({ "i", "s" }, "<C-E>", function()
+vim.keymap.set({ 'i', 's' }, '<C-E>', function()
   if ls.choice_active() then
     ls.change_choice(1)
   end
@@ -114,22 +136,42 @@ vim.api.nvim_create_autocmd('LspAttach', {
     vim.keymap.set({ 'n', 'v' }, '<space>ca', vim.lsp.buf.code_action, opts)
     vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
     vim.keymap.set('n', '<space>f', function()
-      require("conform").format({ async = true })
+      require('conform').format { async = true }
     end, opts)
   end,
 })
 -- oil
-vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
+vim.keymap.set('n', '-', '<CMD>Oil<CR>', { desc = 'Open parent directory' })
 -- spectre
 vim.keymap.set('n', '<leader>S', '<cmd>lua require("spectre").toggle()<CR>', {
-  desc = "Toggle Spectre"
+  desc = 'Toggle Spectre',
 })
 vim.keymap.set('n', '<leader>sw', '<cmd>lua require("spectre").open_visual({select_word=true})<CR>', {
-  desc = "Search current word"
+  desc = 'Search current word',
 })
 vim.keymap.set('v', '<leader>sw', '<esc><cmd>lua require("spectre").open_visual()<CR>', {
-  desc = "Search current word"
+  desc = 'Search current word',
 })
 vim.keymap.set('n', '<leader>sp', '<cmd>lua require("spectre").open_file_search({select_word=true})<CR>', {
-  desc = "Search on current file"
+  desc = 'Search on current file',
 })
+
+-- Copilot
+-- when Ctrl + C is pressed, it will close the suggestion
+vim.keymap.set('i', '<C-c>', function()
+  require('copilot.suggestion').dismiss()
+  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-c>', true, false, true), 'n', false)
+end, {
+  desc = '[copilot] dismiss suggestion',
+  silent = true,
+})
+
+-- When a suggestion is accepted, don't show completion menu (nvim-cmp)
+vim.keymap.set('i', '<C-y>', function()
+  require('copilot.suggestion').accept()
+end, {
+  desc = '[copilot] accept suggestion without showing completion menu',
+  silent = true,
+})
+
+

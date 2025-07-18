@@ -38,10 +38,17 @@ return {
         Operator = '  ',
         TypeParameter = '  ',
       }
-      vim.api.nvim_set_hl(0, "CmpGhostText", { link = "Comment", default = true })
-      vim.api.nvim_set_hl(0, "CmpNormal", { bg = "#303134" })
-      vim.api.nvim_set_hl(0, "NormalFloat", { bg = "#303134" })
+      vim.api.nvim_set_hl(0, 'CmpGhostText', { link = 'Comment', default = true })
+      vim.api.nvim_set_hl(0, 'CmpNormal', { bg = '#303134' })
+      vim.api.nvim_set_hl(0, 'NormalFloat', { bg = '#303134' })
       local cmp = require 'cmp'
+      cmp.event:on('menu_opened', function()
+        vim.b.copilot_suggestion_hidden = true
+      end)
+
+      cmp.event:on('menu_closed', function()
+        vim.b.copilot_suggestion_hidden = false
+      end)
       vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
       cmp.setup {
         snippet = {
@@ -51,7 +58,7 @@ return {
         },
         window = {
           completion = {
-            winhighlight = "Normal:CmpNormal",
+            winhighlight = 'Normal:CmpNormal',
           },
         },
         mapping = cmp.mapping.preset.insert {
@@ -78,25 +85,26 @@ return {
       { name = 'buffer' },
     })
  })
- require("cmp_git").setup() ]] --
+ require("cmp_git").setup() ]]
+        --
       }
-    end
-  },
-  {
-    "rafamadriz/friendly-snippets",
-    config = function()
-      require("luasnip.loaders.from_vscode").lazy_load()
     end,
   },
   {
-    "L3MON4D3/LuaSnip",
-    -- follow latest release.
-    version = "v2.*", -- Replace <CurrentMajor> by the latest released major (first number of latest release)
-    -- install jsregexp (optional!).
-    build = "make install_jsregexp"
+    'rafamadriz/friendly-snippets',
+    config = function()
+      require('luasnip.loaders.from_vscode').lazy_load()
+    end,
   },
   {
-    "L3MON4D3/LuaSnip",
-    dependencies = { "rafamadriz/friendly-snippets" },
-  }
+    'L3MON4D3/LuaSnip',
+    -- follow latest release.
+    version = 'v2.*', -- Replace <CurrentMajor> by the latest released major (first number of latest release)
+    -- install jsregexp (optional!).
+    build = 'make install_jsregexp',
+  },
+  {
+    'L3MON4D3/LuaSnip',
+    dependencies = { 'rafamadriz/friendly-snippets' },
+  },
 }

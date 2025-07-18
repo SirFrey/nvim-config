@@ -16,6 +16,15 @@ return {
       require('mason-lspconfig').setup {
         -- ensure these servers are installed
         ensure_installed = { 'pylsp', 'pyright', 'lua_ls', 'rust_analyzer', 'tailwindcss', 'ts_ls' },
+        automatic_enable = {
+          exclude = {
+            -- handled these by lspconfig below
+            'jsonls',
+            'ts_ls',
+            'tailwindcss',
+            'lua_ls',
+          },
+        },
       }
       local mason_tool_installer = require 'mason-tool-installer'
 
