@@ -1,5 +1,8 @@
 return {
   {
+    'windwp/nvim-ts-autotag',
+  },
+  {
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
     config = function()
@@ -23,8 +26,5 @@ return {
         indent = { enable = true },
       }
     end,
-  },
-  {
-    'windwp/nvim-ts-autotag',
   },
 }

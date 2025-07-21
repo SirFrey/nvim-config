@@ -15,7 +15,7 @@ return {
     config = function()
       require('mason-lspconfig').setup {
         -- ensure these servers are installed
-        ensure_installed = { 'pylsp', 'pyright', 'lua_ls', 'rust_analyzer', 'tailwindcss', 'ts_ls' },
+        ensure_installed = { 'pylsp', 'pyright', 'lua_ls', 'rust_analyzer', 'tailwindcss', 'ts_ls', 'vtsls' },
         automatic_enable = {
           exclude = {
             -- handled these by lspconfig below
@@ -59,12 +59,12 @@ return {
       }
 
       -- TypeScript
-      lspconfig.ts_ls.setup {
-        capabilities = capabilities,
-        root_dir = function(...)
-          return require('lspconfig.util').root_pattern '.git'(...)
-        end,
-      }
+      --  lspconfig.ts_ls.setup {
+      --    capabilities = capabilities,
+      --    root_dir = function(...)
+      --      return require('lspconfig.util').root_pattern '.git'(...)
+      --    end,
+      --  }
       -- Tailwind CSS
       lspconfig.tailwindcss.setup {
         capabilities = capabilities,
