@@ -13,16 +13,16 @@ vim.opt.backup = false
 
 -- Set the undo directory in a cross-platform way
 -- Get the user's home directory in a cross-platform way
-local home = vim.fn.has("win32") == 1 and os.getenv("USERPROFILE") or os.getenv("HOME")
+local home = vim.fn.has 'win32' == 1 and os.getenv 'USERPROFILE' or os.getenv 'HOME'
 
 -- Check if the home directory was found
 if not home then
-  print("Error: Could not determine home directory.")
+  print 'Error: Could not determine home directory.'
   return
 end
 
 -- Define the undo directory path using a cross-platform path joiner
-local undodir = vim.fs.joinpath(home, ".vim", "undodir")
+local undodir = vim.fs.joinpath(home, '.vim', 'undodir')
 
 -- Set the undodir option
 vim.opt.undodir = undodir
